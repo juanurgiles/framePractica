@@ -7,6 +7,8 @@ package net.unir.plataformas;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import net.unir.plataformas.modelo.Medicamento;
 import net.unir.plataformas.modelo.Pedido;
@@ -17,27 +19,51 @@ import net.unir.plataformas.modelo.Pedido;
  */
 public class Formulario extends javax.swing.JFrame {
 
+    public FormPedido formpedido;
+    private List tipoMedicamento;
+    private List distribuidores;
+    public List sucursales;
+    public List direcciones;
+
     /**
      * Creates new form Formulario
      */
     public Formulario() {
         initComponents();
+        tipoMedicamento = new ArrayList();
+        distribuidores = new ArrayList();
+        sucursales = new ArrayList();
+        direcciones = new ArrayList();
+        this.tipoMedicamento.add("Analgésico");
+        this.tipoMedicamento.add("Analéptico");
+        this.tipoMedicamento.add("Anestésico");
+        this.tipoMedicamento.add("Antiácido");
+        this.tipoMedicamento.add("Antidepresivo");
+        this.tipoMedicamento.add("Antibiótico");
+        this.distribuidores.add("Cofarma");
+        this.distribuidores.add("Empsephar");
+        this.distribuidores.add("Cemefar");
+        this.sucursales.add("Principal");
+        this.sucursales.add("Secundaria");
+        this.direcciones.add("Calle de la Rosa n. 28 ");
+        this.direcciones.add("Calle Alcazabilla n. 3");
+        this.formpedido = new FormPedido();
+
     }
-    public JFrame pedido;
-    
+
     /**
      * Método para Limpiar el Formulario
      */
     public void limpiarFormulario() {
         txtNombre.setText("");
-        cbxTipo.setSelectedItem(null);
-        cbxTipo.setSelectedItem(null);
+        cbxTipo.setSelectedItem("Seleccionar");
+
         rbDistribuidor1.setSelected(false);
         rbDistribuidor2.setSelected(false);
         rbDistribuidor3.setSelected(false);
         chkSucursal1.setSelected(false);
         chkSucursal2.setSelected(false);
-        spinCantidad.setValue(0);
+        txtCant.setText("0");
     }
 
     /**
@@ -56,7 +82,6 @@ public class Formulario extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
-        spinCantidad = new javax.swing.JSpinner();
         rbDistribuidor1 = new javax.swing.JRadioButton();
         rbDistribuidor2 = new javax.swing.JRadioButton();
         rbDistribuidor3 = new javax.swing.JRadioButton();
@@ -66,6 +91,7 @@ public class Formulario extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         txtError = new javax.swing.JLabel();
+        txtCant = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -128,6 +154,12 @@ public class Formulario extends javax.swing.JFrame {
         txtError.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         txtError.setOpaque(true);
 
+        txtCant.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCantActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -158,7 +190,7 @@ public class Formulario extends javax.swing.JFrame {
                                     .addComponent(rbDistribuidor1)
                                     .addComponent(txtNombre)
                                     .addComponent(cbxTipo, 0, 186, Short.MAX_VALUE)
-                                    .addComponent(spinCantidad)))
+                                    .addComponent(txtCant)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -182,7 +214,7 @@ public class Formulario extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(spinCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rbDistribuidor1)
@@ -202,7 +234,7 @@ public class Formulario extends javax.swing.JFrame {
                     .addComponent(jButton1)
                     .addComponent(jButton2))
                 .addGap(18, 18, 18)
-                .addComponent(txtError, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE))
+                .addComponent(txtError, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE))
         );
 
         pack();
@@ -228,22 +260,38 @@ public class Formulario extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here
         List<String> errores = new ArrayList();
+        try {
+            Exception e = new Exception("Debe ingresar un nombre.");
+            if (txtNombre.getText().equals("")) {
+                throw e;
+            }
+        } catch (Exception e) {
+            // e.printStackTrace();
+            errores.add(e.getMessage());
 
-        if (txtNombre.getText().equals("")) {
-            errores.add("Debe ingresar un nombre");
         }
-        if (cbxTipo.getSelectedItem().equals("Seleccionar")) {
-            errores.add("Debe seleccionar un tipo");
+        try {
+            if (Integer.parseInt(txtCant.getText()) <= 0) {
+                errores.add("Debe ingresar un número mayor a cero");
+            }
+        } catch (NumberFormatException e) {
+            errores.add("Debe ingresar un número en el Campo:  Cantidad");
         }
-        if (!rbDistribuidor1.isSelected() && !rbDistribuidor2.isSelected() && !rbDistribuidor3.isSelected()) {
-            errores.add("Sebe seleccionar un distribuidor");
+        try {
+            assert !cbxTipo.getSelectedItem().equals("Seleccionar");
+        } catch (AssertionError e) {
+            errores.add("Debe seleccionar un Tipo");
         }
+        try {
+            assert !(!rbDistribuidor1.isSelected() && !rbDistribuidor2.isSelected() && !rbDistribuidor3.isSelected());
+        } catch (AssertionError e) {
+            errores.add("Debe seleccionar un Distribuidor");
+        }
+
         if (!chkSucursal1.isSelected() && !chkSucursal2.isSelected()) {
             errores.add("Debe seleccionar al menos una sucursal");
         }
-        if ((int) spinCantidad.getValue() < 0) {
-            errores.add("Debe ingresar un número mayor a cero");
-        }
+
         if (errores.size() > 0) {
             String error = "";
             for (String e : errores) {
@@ -252,21 +300,45 @@ public class Formulario extends javax.swing.JFrame {
             txtError.setText("<html>" + error + "</html>");
             //System.out.println(error);
         } else {
-           Pedido p = new Pedido();
-           Medicamento m = new Medicamento();
-           m.setNombre(txtNombre.getText());
-           m.setTipo(cbxTipo.getSelectedItem().toString());
-           p.setMedicamento(m);
-           p.setDistribuidor("");
-             
-        rbDistribuidor1.setSelected(false);
-        rbDistribuidor2.setSelected(false);
-        rbDistribuidor3.setSelected(false);
-        chkSucursal1.setSelected(false);
-        chkSucursal2.setSelected(false);
-        spinCantidad.setValue(0);
+            Pedido p = new Pedido();
+            Medicamento m = new Medicamento();
+            m.setNombre(txtNombre.getText());
+            m.setTipo(cbxTipo.getSelectedItem().toString());
+            p.setMedicamento(m);
+            String distribuidor = "";
+            if (rbDistribuidor1.isSelected()) {
+                distribuidor = this.distribuidores.get(0).toString();
+            }
+            if (rbDistribuidor2.isSelected()) {
+                distribuidor = this.distribuidores.get(1).toString();
+            }
+            if (rbDistribuidor3.isSelected()) {
+                distribuidor = this.distribuidores.get(2).toString();
+            }
+            String sucursal = "";
+            p.setDistribuidor(distribuidor);
+            if (chkSucursal1.isSelected()) {
+                p.setSucursalPrincipal(this.sucursales.get(0).toString());
+                p.setDireccionPrincipal(this.direcciones.get(0).toString());
+            }
+            if (chkSucursal2.isSelected()) {
+                p.setSucursalSecundaria(this.sucursales.get(1).toString());
+                p.setDireccionSecundaria(this.direcciones.get(1).toString());
+            }
+
+            p.setCantidad(Integer.parseInt(txtCant.getText()));
+            this.formpedido.pedido = p;
+            this.formpedido.cargar();
+            this.formpedido.principal = this;
+            this.setVisible(false);
+            this.formpedido.setVisible(true);
+
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void txtCantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCantActionPerformed
 
     /**
      * @param args the command line arguments
@@ -318,7 +390,7 @@ public class Formulario extends javax.swing.JFrame {
     private javax.swing.JRadioButton rbDistribuidor1;
     private javax.swing.JRadioButton rbDistribuidor2;
     private javax.swing.JRadioButton rbDistribuidor3;
-    private javax.swing.JSpinner spinCantidad;
+    private javax.swing.JTextField txtCant;
     private javax.swing.JLabel txtError;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables

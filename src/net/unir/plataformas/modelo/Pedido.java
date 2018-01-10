@@ -6,15 +6,49 @@
 package net.unir.plataformas.modelo;
 
 /**
- *
+ * Clase para Pedido de farmacia
  * @author casa
  */
 public class Pedido {
     private Medicamento medicamento;
     private Integer cantidad;
     private String distribuidor;
-    private String sucursal;
-    private String direccion;
+    private String sucursalSecundaria;
+    private String direccionSecundaria;
+    private String sucursalPrincipal;
+    private String direccionPrincipal;
+
+    public String getSucursalSecundaria() {
+        return sucursalSecundaria;
+    }
+
+    public void setSucursalSecundaria(String sucursalSecundaria) {
+        this.sucursalSecundaria = sucursalSecundaria;
+    }
+
+    public String getDireccionSecundaria() {
+        return direccionSecundaria;
+    }
+
+    public void setDireccionSecundaria(String direccionSecundaria) {
+        this.direccionSecundaria = direccionSecundaria;
+    }
+
+    public String getSucursalPrincipal() {
+        return sucursalPrincipal;
+    }
+
+    public void setSucursalPrincipal(String sucursalPrincipal) {
+        this.sucursalPrincipal = sucursalPrincipal;
+    }
+
+    public String getDireccionPrincipal() {
+        return direccionPrincipal;
+    }
+
+    public void setDireccionPrincipal(String direccionPrincipal) {
+        this.direccionPrincipal = direccionPrincipal;
+    }
 
     public Medicamento getMedicamento() {
         return medicamento;
@@ -40,20 +74,6 @@ public class Pedido {
         this.distribuidor = distribuidor;
     }
 
-    public String getSucursal() {
-        return sucursal;
-    }
 
-    public void setSucursal(String sucursal) {
-        this.sucursal = sucursal;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
     
 }

@@ -6,7 +6,7 @@
 package net.unir.plataformas.modelo;
 
 /**
- *
+ * Clase para Medicamento
  * @author casa
  */
 public class Medicamento {

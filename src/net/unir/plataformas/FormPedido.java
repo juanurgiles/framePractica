@@ -5,17 +5,35 @@
  */
 package net.unir.plataformas;
 
+import net.unir.plataformas.modelo.Pedido;
+
 /**
  *
  * @author casa
  */
 public class FormPedido extends javax.swing.JFrame {
 
+    public Pedido pedido;
+    public Formulario principal;
+
     /**
      * Creates new form Listado
      */
     public FormPedido() {
         initComponents();
+
+    }
+
+    public void cargar() {
+        this.setTitle("Pedido al distribuidor " + pedido.getDistribuidor());
+        txtMedicamento.setText(pedido.getCantidad() + " unidades del " + pedido.getMedicamento().getTipo() + " " + pedido.getMedicamento().getNombre());
+        if (pedido.getDireccionPrincipal() != null) {
+            txtDireccionPrincipal.setText("Para la farmacia Principal situada en " + pedido.getDireccionPrincipal());
+        }
+        if (pedido.getDireccionSecundaria() != null) {
+            txtDireccionSecundaria.setText("Para la farmacia Secundaria situada en " + pedido.getDireccionSecundaria());
+
+        }
     }
 
     /**
@@ -28,32 +46,62 @@ public class FormPedido extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        txtMedicamento = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        txtDireccionPrincipal = new javax.swing.JLabel();
+        txtDireccionSecundaria = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Medicamento a pedir");
 
-        jLabel2.setText("jLabel2");
+        txtMedicamento.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        txtMedicamento.setText("jLabel2");
 
         jLabel3.setText("Dirección de la Farmacia:");
 
-        jLabel4.setText("jLabel4");
+        txtDireccionPrincipal.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        txtDireccionPrincipal.setText("jLabel4");
+
+        txtDireccionSecundaria.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        txtDireccionSecundaria.setText("jLabel4");
+
+        jButton1.setText("Cancelar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Pedido Enviado");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1))
-                .addContainerGap(236, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(45, 45, 45)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtDireccionSecundaria)
+                            .addComponent(txtDireccionPrincipal)
+                            .addComponent(jLabel3)
+                            .addComponent(txtMedicamento)
+                            .addComponent(jLabel1)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(137, 137, 137)
+                        .addComponent(jButton1)
+                        .addGap(32, 32, 32)
+                        .addComponent(jButton2)))
+                .addContainerGap(277, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -61,16 +109,33 @@ public class FormPedido extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel2)
+                .addComponent(txtMedicamento)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4)
-                .addContainerGap(167, Short.MAX_VALUE))
+                .addComponent(txtDireccionPrincipal)
+                .addGap(18, 18, 18)
+                .addComponent(txtDireccionSecundaria)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addGap(81, 81, 81))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.principal.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        System.out.println("Pedido Enviado...");
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -111,9 +176,12 @@ public class FormPedido extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel txtDireccionPrincipal;
+    private javax.swing.JLabel txtDireccionSecundaria;
+    private javax.swing.JLabel txtMedicamento;
     // End of variables declaration//GEN-END:variables
 }
